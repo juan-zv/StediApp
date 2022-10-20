@@ -44,12 +44,7 @@ const OnboardingScreen = ({setFirstLaunch}) =>{
               backgroundColor: '#fff',
               image: <Image   style={{height: '60%', width: '90%', resizeMode:'contain', marginBottom:-200}} source={require('../image/testing.png')} />,
               title: <Text style={{fontWeight:'bold', textAlign:'center', color:'#A0CE4E', fontSize:19, margin:12,  marginTop: -70}}>Welcome to STEDI  Balance</Text>,
-              subtitle: (
-                <View>
-                    <Text style={{fontWeight:'bold', textAlign:'center', color:'#000000', fontSize:19, margin:12,  marginTop: -70}}>Enter phone number</Text>
-                    <TextInput placeholder="Phone Number"/>
-                </View>
-              )
+              subtitle: 'Welcome to STEDI',
             },
             {
                 backgroundColor: '#fff',
