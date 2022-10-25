@@ -13,10 +13,11 @@ const AppStack = createNativeStackNavigator();
 
 const App = () =>{
   const [isFirstLaunch, setFirstLaunch] = React.useState(true);
+  const [phoneNumber, setPhoneNumber] = React.useState("")
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [homeTodayScore, setHomeTodayScore] = React.useState(0);
 
-   if (isFirstLaunch == true){
+   if (isFirstLaunch){
 return(
   <OnboardingScreen setFirstLaunch={setFirstLaunch}/>
  
@@ -26,16 +27,30 @@ return(
   }else{
     return(
       <View>
-        <TextInput>
+        <TextInput
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
           style={styles.input}
           placeholderTextColor="#4251f5"
-          placeholder="Cell Phone"
+          placeholder="Cell Phone">
         </TextInput>
         <Button
           title="Send"
           style={styles.button}
-          onPress={()=>{
-            console.log("Button was pressed")
+          onPress={async()=>{
+            console.log(phoneNumber + "Button was pressed")
+
+            await fetch(
+              "https://dev.stedi.me/twofactorlogin/" + phoneNumber,
+              {
+
+                method: "POST",
+                headers:{
+                  "content-type" : "applcation/text"
+                }
+              }
+            )
+
           }}
         />
       </View>
@@ -45,25 +60,25 @@ return(
  export default App;
 
   const styles = StyleSheet.create({
-  container:{
+    container:{
       flex:1, 
       alignItems:'center',
       justifyContent: 'center'
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    marginTop: 300,
+    input: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+      marginTop: 350,
   },
-  margin:{
-    marginTop:100
+    margin:{
+      marginTop:100
   },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10
+    button: {
+      alignItems: "center",
+      backgroundColor: "#DDDDDD",
+      padding: 10
   }    
 })
 
