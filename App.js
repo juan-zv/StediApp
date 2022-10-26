@@ -1,5 +1,5 @@
 import React, { useEffect, useState, } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage, TextInput, Button, Alert } from 'react-native';
 import  Navigation from './components/Navigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OnboardingScreen from './screens/OnboardingScreen';
@@ -13,7 +13,8 @@ const AppStack = createNativeStackNavigator();
 
 const App = () =>{
   const [isFirstLaunch, setFirstLaunch] = React.useState(true);
-  const [phoneNumber, setPhoneNumber] = React.useState("")
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [tempCode, setTempCode] = React.useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [homeTodayScore, setHomeTodayScore] = React.useState(0);
 
@@ -53,6 +54,42 @@ return(
 
           }}
         />
+        <TextInput
+          value={tempCode}
+          onChangeText={setTempCode}
+          style={styles.input2}
+          placeholderTextColor="#4251f5"
+          placeholder="Enter Code">
+        </TextInput>
+        <Button
+          title="Verify"
+          style={styles.button2}
+          onPress={async()=>{
+            console.log(tempCode + "Button was pressed")
+
+            const logInResponse=await fetch(
+              "https://dev.stedi.me/twofactorlogin",
+              {
+                method: "POST",
+                headers:{
+                  "content-type" : "application/text"
+                },
+                body:JSON.stringify({
+                  phoneNumber,
+                  oneTimePassword:tempCode
+                })
+              }
+            )
+            console.log(logInResponse.status)
+            if (logInResponse.status==200){
+              const sessionToken = await logInResponse.text();
+              console.log("Session Token", sessionToken);
+              setIsLoggedIn(true);
+            } else{
+              Alert.alert("Warning", "An invalid code was entered")
+            }
+          }}
+        />
       </View>
     )
   }
@@ -79,6 +116,7 @@ return(
       alignItems: "center",
       backgroundColor: "#DDDDDD",
       padding: 10
-  }    
+  }
+
 })
 
