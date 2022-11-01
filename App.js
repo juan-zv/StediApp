@@ -63,7 +63,7 @@ return(
         </TextInput>
         <Button
           title="Verify"
-          style={styles.button2}
+          style={styles.button}
           onPress={async()=>{
             console.log(tempCode + "Button was pressed")
 
@@ -80,7 +80,9 @@ return(
                 })
               }
             )
+
             console.log(logInResponse.status)
+
             if (logInResponse.status==200){
               const sessionToken = await logInResponse.text();
               console.log("Session Token", sessionToken);
@@ -107,7 +109,7 @@ return(
       margin: 12,
       borderWidth: 1,
       padding: 10,
-      marginTop: 350,
+      marginTop: 250,
   },
     margin:{
       marginTop:100
@@ -116,6 +118,13 @@ return(
       alignItems: "center",
       backgroundColor: "#DDDDDD",
       padding: 10
+  },
+  input2: {
+    height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+      marginTop: 50,
   }
 
 })
