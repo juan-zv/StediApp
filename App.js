@@ -1,10 +1,12 @@
 import React, { useEffect, useState, } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage, TextInput, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import  Navigation from './components/Navigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OnboardingScreen from './screens/OnboardingScreen';
 import Home from './screens/Home';
 import { NavigationContainer } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 
 
@@ -82,12 +84,17 @@ return(
             )
 
             console.log(logInResponse.status)
+            //const loginToken = await logInResponse.text();
+            //console.log("login token", loginToken)
 
             if (logInResponse.status==200){
               const sessionToken = await logInResponse.text();
+              await AsyncStorage.setItem("sessionToken", sessionToken
+              )
               console.log("Session Token", sessionToken);
               setIsLoggedIn(true);
             } else{
+              console.log("Token response Status", logInResponse.status)
               Alert.alert("Warning", "An invalid code was entered")
             }
           }}
