@@ -20,7 +20,22 @@ const App = () =>{
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [homeTodayScore, setHomeTodayScore] = React.useState(0);
 
-   if (isFirstLaunch){
+  useEffect(()=>{
+    const getSessionToken = async() => {
+      const sessionToken = await AsyncStorage.getItem("sessionToken");
+      console.log("token from storage", sessionToken);
+      const validateResponse = await fetch("https://dev.stedi.me/validate/"+sessionToken);
+      if(validateResponse.status == 200){
+        const userEmail = await validateResponse.text();
+        console.log("userEmail", userEmail);
+        setIsLoggedIn(true);
+      }
+
+    }
+    getSessionToken();
+  }, [])
+
+   if (isFirstLaunch == true &&! isLoggedIn){
 return(
   <OnboardingScreen setFirstLaunch={setFirstLaunch}/>
  
@@ -89,11 +104,13 @@ return(
 
             if (logInResponse.status==200){
               const sessionToken = await logInResponse.text();
-              await AsyncStorage.setItem("sessionToken", sessionToken
-              )
+              await AsyncStorage.setItem("sessionToken", sessionToken)
               console.log("Session Token", sessionToken);
+              
+
               setIsLoggedIn(true);
-            } else{
+            } 
+            else{
               console.log("Token response Status", logInResponse.status)
               Alert.alert("Warning", "An invalid code was entered")
             }
