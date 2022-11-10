@@ -1,34 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View, Image, SafeAreaView , Share, ScrollView, Button} from 'react-native';
 import { Card, CardTitle, CardContent} from 'react-native-material-cards';
 import BarChart from 'react-native-bar-chart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Camera } from "expo-camera";
 // import Share from 'react-native-share';
 
 
 
-// const data = [
-//   [70, 0],
-//   [80,0],
-//   [110, 0],
-//   [100, 0],
-//   [280, 0],
-//   [80,0 ],
-//   [110, 0]
 
-// ];
-// labels
-// const horizontalData = ['S', 'M', 'T', 'W', 'T', 'F','S'];
 
 const Profile = (props) => {
   const [userName, setUserName] = useState("");
+  const [cameraPermission, setCameraPermission] = useState(false);
+  const [profilephoto, setProfilePhoto] = useState(null);
+  const cameraRef = useRef(null);
 
   useEffect(()=>{
-    const getUsername = async ()=>{
+    const getUserName = async ()=>{
+      const cameraPermission = await Camera.requestCameraPermissionsAsync();
+      setCameraPermission(cameraPermission);
       const userName = AsyncStorage.getItem("userName");
       setUserName(userName);
     };
-    getUsername();
+    getUserName();
   },[]);
 
   const myCustomerShare = async() =>{
