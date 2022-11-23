@@ -28,7 +28,7 @@ const App = () =>{
       const validateResponse = await fetch("https://dev.stedi.me/validate/"+sessionToken);
       if(validateResponse.status == 200){
         const userEmail = await validateResponse.text();
-        await AsyncStorage.setItem("userName", userEmail);
+        await AsyncStorage.setItem("userEmail", userEmail);
         console.log("userEmail", userEmail);
         setIsLoggedIn(true);
       }
