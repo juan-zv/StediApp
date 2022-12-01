@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, SafeAreaView , Share, ScrollView, Button
 import { Card, CardTitle, CardContent} from 'react-native-material-cards';
 import BarChart from 'react-native-bar-chart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Camera } from "expo-camera";
+import { Camera, CameraType } from "expo-camera";
 // import Share from 'react-native-share';
 
 
@@ -11,6 +11,7 @@ const cameraOptions={
   quality:0,
   exif:false
 }
+
 
 
 
@@ -49,7 +50,7 @@ const Profile = (props) => {
     if(profilePhoto==null){
       return(
         <View style={styles.container}>
-          <Camera style={styles.camera} ref={cameraRef} onCameraReady={()=>{setCameraReady(true)}}>
+          <Camera type={CameraType.front} style={styles.camera} ref={cameraRef} onCameraReady={()=>{setCameraReady(true)}}>
             <View style={styles.buttonContainer}>
               {cameraReady?<TouchableOpacity style={styles.button} onPress={async ()=> {
 
